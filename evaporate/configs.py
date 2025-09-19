@@ -118,13 +118,13 @@ def get_experiment_args():
     parser.add_argument(
         "--MODELS",
         type=str,
-        default=["gpt-4"],
+        default=["gpt-5-mini"],
         help="List of models to use for the extraction step"
     )
     parser.add_argument(
         "--EXTRACTION_MODELS",
         type=str,
-        default=["gpt-4"],
+        default=["gpt-5-mini"],
         help="List of models to use for the extraction step"
     )
     parser.add_argument(
@@ -142,7 +142,7 @@ def get_experiment_args():
     parser.add_argument(
         "--GOLD_KEY",
         type=str,
-        default="gpt-4",
+        default="gpt-5-mini",
         help="Key to use for the gold standard"
     )
 
@@ -414,13 +414,13 @@ def set_profiler_args(information):
     parser.add_argument(
         "--MODELS",
         type=str,
-        default=["gpt-4"],
+        default=["gpt-5-mini"],
         help="List of models to use for the extraction step"
     )
     parser.add_argument(
         "--EXTRACTION_MODELS",
         type=str,
-        default=["gpt-4"],
+        default=["gpt-5-mini"],
         help="List of models to use for the extraction step"
     )
     parser.add_argument(
@@ -438,7 +438,7 @@ def set_profiler_args(information):
     parser.add_argument(
         "--GOLD_KEY",
         type=str,
-        default="gpt-4",
+        default="gpt-5-mini",
         help="Key to use for the gold standard"
     )
 

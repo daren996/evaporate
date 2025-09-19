@@ -130,3 +130,8 @@ dmypy.json
 
 # Custom
 .sqlite.cache
+
+.vscode/
+
+data/
+scripts/
