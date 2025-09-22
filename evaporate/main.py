@@ -5,7 +5,6 @@ from evaporate.profiler import get_model_extractions
 from evaporate.configs import  set_profiler_args
 from evaporate.evaluate_synthetic_utils import text_f1, get_file_attribute
 from evaporate.evaluate_profiler import pick_a_gold_label, evaluate, get_topk_scripts_per_field
-from evaporate.retrieval import get_most_similarity
 from evaporate.profiler import get_functions, apply_final_profiling_functions,apply_final_ensemble,combine_extractions
 import os
 import json
@@ -67,6 +66,7 @@ class EvaporateData:
                 baseline_sentence = attribute + ":"+  gold[attribute]
                 for file in files:
                     sentences = self.data_dict["file2chunks"][file]
+                    from evaporate.retrieval import get_most_similarity
                     new_file_chunk_dict[file] = [get_most_similarity(baseline_sentence, sentences)]
             else:
                 new_file_chunk_dict =  self.data_dict["file2chunks"]
@@ -92,7 +92,8 @@ class EvaporateData:
                     except:
                         print("error in ", attribute, file, extractions[file])
                 else:
-                    self.direct_result[attribute][file] = pick_a_gold_label(golds, attribute, self.manifest_session)
+                    # self.direct_result[attribute][file] = pick_a_gold_label(golds, attribute, self.manifest_session)
+                    self.direct_result[attribute][file] = pick_a_gold_label(golds, attribute, self.manifest_sessions[self.GOLD_MODEL])  # add by ReDD
             print("finish extract ", attribute)
         self.runtime["direct_extract"] = time.time() - time_begin
         self.token_used["direct_extract"] = token_used

@@ -51,8 +51,12 @@ def directly_extract_from_chunks_w_value(
                     manifest=manifest_session, 
                     overwrite_cache=overwrite_cache
                 )
-            except:
-                print("Failed to apply prompt to chunk.")
+            except Exception as e:
+                print(f"Failed to apply prompt to chunk. Error: {str(e)}")
+                print(f"Error type: {type(e).__name__}")
+                import traceback
+                traceback.print_exc()
+                exit()
                 continue
             total_tokens_prompted  += num_toks
             result = result.split("---")[0].strip("\n")

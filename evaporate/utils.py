@@ -7,16 +7,20 @@ from evaporate.configs import get_args
 from evaporate.prompts import Step
 from openai import OpenAI
 
+
 cur_idx = 0
 TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY")
-#If using together AI, you will need to set the TOGETHER_API_KEY to your API key
+# If using together AI, you will need to set the TOGETHER_API_KEY to your API key
+SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")  # added by ReDD
+# If using SiliconFlow, you will need to set the SILICONFLOW_API_KEY to your API key
 
 
 def together_call(prompt, model, streaming = False, max_tokens = 1024):
     client = OpenAI(
-        api_key=TOGETHER_API_KEY,
-        base_url='https://api.together.xyz',
-
+        # api_key=TOGETHER_API_KEY,
+        # base_url='https://api.together.xyz/v1',
+        api_key=SILICONFLOW_API_KEY,  # added by ReDD
+        base_url='https://api.siliconflow.com/v1',
     )
     messages = [{
         "role": "system",
@@ -72,6 +76,8 @@ def get_file_attribute(attribute):
 def get_all_files(data_dir):
     files = []
     for file in os.listdir(data_dir):
+        if file.startswith('.'):
+            continue
         if os.path.isfile(os.path.join(data_dir, file)):
             files.append(os.path.join(data_dir, file))
         else:
@@ -84,6 +90,8 @@ def get_directory_hierarchy(data_dir):
         data_dir = data_dir + "/"
     directories2subdirs = defaultdict(list)
     for file in os.listdir(data_dir):
+        if file.startswith('.'):
+            continue
         new_dir = os.path.join(data_dir, file)
         if not new_dir.endswith("/") and os.path.isdir(new_dir):
             new_dir = new_dir + "/"
@@ -187,7 +195,8 @@ def get_manifest_sessions(MODELS, MODEL2URL=None, KEYS=[]):
             if(model not in MODEL2URL):
                 manifest = {}
                 manifest["__name"] = model
-                print("using together AI")
+                # print("using together AI")
+                print("using SiliconFlow")  # added by ReDD
             else:
                 print("using huggingface")
                 manifest, model_name = get_manifest_session(

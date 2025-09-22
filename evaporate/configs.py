@@ -119,13 +119,15 @@ def get_experiment_args():
         "--MODELS",
         type=str,
         default=["gpt-5-mini"],
-        help="List of models to use for the extraction step"
+        help="List of models to use for the extraction step",
+        nargs='*'
     )
     parser.add_argument(
         "--EXTRACTION_MODELS",
         type=str,
         default=["gpt-5-mini"],
-        help="List of models to use for the extraction step"
+        help="List of models to use for the extraction step",
+        nargs='*'
     )
     parser.add_argument(
         "--MODEL2URL",
@@ -255,8 +257,8 @@ def get_experiment_args():
 
     parser.add_argument(
         "--topic",
-        type=list,
-        default=[],
+        type=str,
+        default="",
         help="Topic of the data lake",
     )
     experiment = parser.parse_args()
@@ -325,7 +327,7 @@ def get_args(profiler_args):
     )
     parser.add_argument(
         "--topic",
-        type=list,
+        type=str,
         default=profiler_args.topic,
         help="Topic of the data lake",
     )
@@ -415,13 +417,15 @@ def set_profiler_args(information):
         "--MODELS",
         type=str,
         default=["gpt-5-mini"],
-        help="List of models to use for the extraction step"
+        help="List of models to use for the extraction step",
+        nargs='*'
     )
     parser.add_argument(
         "--EXTRACTION_MODELS",
         type=str,
         default=["gpt-5-mini"],
-        help="List of models to use for the extraction step"
+        help="List of models to use for the extraction step",
+        nargs='*'
     )
     parser.add_argument(
         "--MODEL2URL",
@@ -559,8 +563,8 @@ def set_profiler_args(information):
 
     parser.add_argument(
         "--topic",
-        type=list,
-        default=[],
+        type=str,
+        default="",
         help="Topic of the data lake",
     )
 

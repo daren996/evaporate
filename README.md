@@ -6,6 +6,14 @@
 
 Code, datasets, and extended writeup for paper [Language Models Enable Simple Systems for Generating Structured Views of Heterogeneous Data Lakes](https://www.vldb.org/pvldb/vol17/p92-arora.pdf). 
 
+## Comparison with ReDD
+
+To evaluate Evaporate on ReDD datasets:
+
+```bash
+python scripts/run_direct.py --dataset xxx
+```
+
 ## Setup
 
 We encourage the use of conda environments:

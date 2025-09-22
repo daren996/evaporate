@@ -385,7 +385,7 @@ def get_functions(
                     )
                     total_tokens_prompted += num_toks
                 except Exception as e:
-                    print(e)
+                    # print(e)
                     print(f"Failed to generate function for {attribute}")
                     continue
 

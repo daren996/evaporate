@@ -187,6 +187,9 @@ def run_ws(
         extraction_fraction_thresh=extraction_fraction_thresh,
     )
 
+    if len(test_votes) < 2:  # added by ReDD
+        test_votes = test_votes.reshape(1, -1)
+    
     classes = np.sort(np.unique(test_gold))
     vote_classes = np.sort(np.unique(test_votes))
     n_test, m = test_votes.shape

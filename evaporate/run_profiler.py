@@ -62,11 +62,15 @@ def prepare_data(profiler_args, file_group, data_args, parser = "html"):
         suffix = ""
     # prepare the datalake: chunk all files
     manifest_sessions = get_manifest_sessions(profiler_args.MODELS, MODEL2URL=profiler_args.MODEL2URL, KEYS=profiler_args.KEYS)
-    if os.path.exists(f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_{suffix}_file2chunks.pkl"):
-        with open(f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_{suffix}_file2chunks.pkl", "rb") as f:
+    file2chunks_path = f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_removeTables{profiler_args.remove_tables}{suffix}_file2chunks.pkl"
+    file2contents_path = f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_removeTables{profiler_args.remove_tables}{suffix}_file2contents.pkl"
+    if os.path.exists(file2chunks_path):
+        with open(file2chunks_path, "rb") as f:
             file2chunks = pickle.load(f)
-        with open(f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_{suffix}_file2contents.pkl", "rb") as f:
+        with open(file2contents_path, "rb") as f:
             file2contents = pickle.load(f)
+        print(f"file2chunks exists in: {file2chunks_path}")
+        print(f"file2contents exists in: {file2contents_path}")
     else:
         file2chunks, file2contents = chunk_files(
             file_group, 
@@ -77,11 +81,15 @@ def prepare_data(profiler_args, file_group, data_args, parser = "html"):
             profiler_args.body_only
         )
         if not os.path.exists(data_args.cache_dir):
-            os.mkdir(data_args.cache_dir)
-        with open(f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_removeTables{profiler_args.remove_tables}{suffix}_file2chunks.pkl", "wb") as f:
+            os.makedirs(data_args.cache_dir)
+        file2chunks_path = f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_removeTables{profiler_args.remove_tables}{suffix}_file2chunks.pkl"
+        file2contents_path = f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_removeTables{profiler_args.remove_tables}{suffix}_file2contents.pkl"
+        with open(file2chunks_path, "wb") as f:
             pickle.dump(file2chunks, f)
-        with open(f"{data_args.cache_dir}/{data_lake}_size{len(file_group)}_chunkSize{profiler_args.chunk_size}_removeTables{profiler_args.remove_tables}{suffix}_file2contents.pkl", "wb") as f:
+        with open(file2contents_path, "wb") as f:
             pickle.dump(file2contents, f)
+        print(f"file2chunks saved in: {file2chunks_path}")
+        print(f"file2contents saved in: {file2contents_path}")
     return file2chunks, file2contents, manifest_sessions
 
 
@@ -342,6 +350,7 @@ def run_experiment(profiler_args):
     today = datetime.datetime.today().strftime("%m%d%Y") 
     
     _, _, _, _, args = get_structure(data_lake, profiler_args)
+    print(profiler_args)
     file_groups, extractions_file, parser, full_file_groups = get_data_lake_info(args, data_lake)
     file2chunks, file2contents, manifest_sessions = prepare_data(
         profiler_args, full_file_groups, args, parser
@@ -480,7 +489,7 @@ def run_experiment(profiler_args):
         results_by_train_size[train_size]['num_sample_files'] = len(sample_files)
         result_path_dir = os.path.join(profiler_args.base_data_dir, "results_dumps")
         if not os.path.exists(result_path_dir):
-            os.mkdir(result_path_dir)
+            os.makedirs(result_path_dir)
         print(run_string)
         with open(f"{result_path_dir}/{run_string}_results_by_train_size.pkl", "wb") as f:
             pickle.dump(results_by_train_size, f)
