@@ -134,5 +134,5 @@ dmypy.json
 .vscode/
 
 data/
-scripts/
+scripts/*.sh
 cheatsheet.txt
