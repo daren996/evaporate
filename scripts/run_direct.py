@@ -8,7 +8,7 @@ from collections import Counter
 from evaporate.main import EvaporateData
 from evaporate.evaluate_synthetic import main as evaluate_synthetic_main
 from evaporate.evaluate_synthetic_utils import get_file_attribute
-
+ 
 
 class PerDocumentSaver:
     def __init__(self, base_data_dir, dataset_name):
@@ -358,7 +358,7 @@ def main():
     print("Performing direct extraction...")
     direct_attribute, direct_eval = evaporate.direct_extract(is_getting_sample=False, use_retrieval_model=False)
     
-    print(f"\nExtracted attributes: {direct_attribute}")
+    # print(f"\nExtracted attributes: {direct_attribute}")
     print(f"\nBasic evaluation results: {direct_eval}")
     
     # Compute detailed evaluation metrics
